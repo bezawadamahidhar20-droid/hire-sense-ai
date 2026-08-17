@@ -111,12 +111,10 @@ async function getClientIp(): Promise<string | undefined> {
 }
 
 function isUniqueViolation(err: unknown): boolean {
-  return (
-    typeof err === "object" &&
-    err !== null &&
-    "code" in err &&
-    (err as { code?: string }).code === "23505"
-  );
+  const code = (err as { code?: string } | null)?.code;
+  if (code === "23505") return true;
+  const cause = (err as { cause?: { code?: string } } | null)?.cause;
+  return cause?.code === "23505";
 }
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
