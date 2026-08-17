@@ -7,7 +7,10 @@ import { guessCandidateName } from "@/lib/candidateName";
 export const dynamic = "force-dynamic";
 
 function csvEscape(value: string | number): string {
-  const str = String(value);
+  let str = String(value);
+  if (/^[=+\-@]/.test(str)) {
+    str = `'${str}`;
+  }
   if (/[",\n]/.test(str)) {
     return `"${str.replace(/"/g, '""')}"`;
   }

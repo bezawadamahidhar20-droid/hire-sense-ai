@@ -21,20 +21,35 @@ export default function UploadResumeForm() {
       </div>
 
       {mode === "file" ? (
-        <label className="flex cursor-pointer flex-col items-center justify-center rounded-xl border-2 border-dashed border-slate-300 bg-slate-50 px-6 py-10 text-center transition hover:border-violet-400 hover:bg-violet-50/40">
+        <label
+          htmlFor="resume-file"
+          className="flex cursor-pointer flex-col items-center justify-center rounded-xl border-2 border-dashed border-slate-300 bg-slate-50 px-6 py-10 text-center transition hover:border-violet-400 hover:bg-violet-50/40"
+        >
           <span className="text-sm font-medium text-slate-700">
             Drop a PDF, DOCX, or TXT resume, or click to browse
           </span>
           <span className="mt-1 text-xs text-slate-400">Max 5MB</span>
-          <input type="file" name="file" accept=".pdf,.docx,.txt" className="hidden" />
+          <input
+            id="resume-file"
+            type="file"
+            name="file"
+            accept=".pdf,.docx,.txt"
+            className="hidden"
+          />
         </label>
       ) : (
-        <textarea
-          name="pastedText"
-          rows={10}
-          placeholder="Paste your resume text here…"
-          className="w-full rounded-xl border border-slate-300 px-3.5 py-2.5 text-sm text-slate-900 shadow-sm outline-none transition focus:border-violet-500 focus:ring-2 focus:ring-violet-100"
-        />
+        <div>
+          <label htmlFor="pasted-text" className="sr-only">
+            Paste resume text
+          </label>
+          <textarea
+            id="pasted-text"
+            name="pastedText"
+            rows={10}
+            placeholder="Paste your resume text here…"
+            className="w-full rounded-xl border border-slate-300 px-3.5 py-2.5 text-sm text-slate-900 shadow-sm outline-none transition focus:border-violet-500 focus:ring-2 focus:ring-violet-100"
+          />
+        </div>
       )}
 
       <button

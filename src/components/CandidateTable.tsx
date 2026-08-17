@@ -64,7 +64,8 @@ export default function CandidateTable({
           <select
             value={sortKey}
             onChange={(e) => setSortKey(e.target.value as SortKey)}
-            className="rounded-lg border border-slate-300 px-2 py-1 text-sm outline-none focus:border-violet-500"
+            aria-label="Sort candidates by"
+            className="rounded-lg border border-slate-300 px-2 py-1 text-sm outline-none focus:border-violet-500 focus:ring-2 focus:ring-violet-100"
           >
             <option value="score">Match score ↓</option>
             <option value="experience">Experience ↓</option>
@@ -94,6 +95,7 @@ export default function CandidateTable({
                     type="checkbox"
                     checked={selected.has(c.matchId)}
                     onChange={() => toggleSelected(c.matchId)}
+                    aria-label={`Select ${c.name} for comparison`}
                     className="h-4 w-4 rounded border-slate-300 text-violet-600 focus:ring-violet-500"
                   />
                 </td>
@@ -124,7 +126,8 @@ export default function CandidateTable({
                       onChange={(e) =>
                         handleStatusChange(c.matchId, e.target.value as CandidateRow["status"])
                       }
-                      className="rounded-lg border border-slate-200 bg-white px-1.5 py-1 text-xs outline-none focus:border-violet-500"
+                      aria-label={`Change status for ${c.name}`}
+                      className="rounded-lg border border-slate-200 bg-white px-1.5 py-1 text-xs outline-none focus:border-violet-500 focus:ring-2 focus:ring-violet-100"
                     >
                       <option value="shortlist">Shortlist</option>
                       <option value="review">Review</option>

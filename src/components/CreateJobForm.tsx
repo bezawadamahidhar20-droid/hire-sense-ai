@@ -15,40 +15,52 @@ export default function CreateJobForm() {
       )}
 
       <div className="grid gap-4 sm:grid-cols-2">
-        <label className="block">
-          <span className="mb-1.5 block text-sm font-medium text-slate-700">Job title</span>
+        <div>
+          <label htmlFor="title" className="mb-1.5 block text-sm font-medium text-slate-700">
+            Job title
+          </label>
           <input
+            id="title"
             required
             name="title"
             type="text"
             placeholder="Python Backend Developer"
             className="w-full rounded-xl border border-slate-300 px-3.5 py-2.5 text-sm shadow-sm outline-none focus:border-violet-500 focus:ring-2 focus:ring-violet-100"
           />
-        </label>
-        <label className="block">
-          <span className="mb-1.5 block text-sm font-medium text-slate-700">Company</span>
+        </div>
+        <div>
+          <label htmlFor="company" className="mb-1.5 block text-sm font-medium text-slate-700">
+            Company
+          </label>
           <input
+            id="company"
             name="company"
             type="text"
             placeholder="Acme Inc."
             className="w-full rounded-xl border border-slate-300 px-3.5 py-2.5 text-sm shadow-sm outline-none focus:border-violet-500 focus:ring-2 focus:ring-violet-100"
           />
-        </label>
+        </div>
       </div>
 
-      <label className="block">
-        <span className="mb-1.5 block text-sm font-medium text-slate-700">Location</span>
+      <div>
+        <label htmlFor="location" className="mb-1.5 block text-sm font-medium text-slate-700">
+          Location
+        </label>
         <input
+          id="location"
           name="location"
           type="text"
           defaultValue="Remote"
           className="w-full rounded-xl border border-slate-300 px-3.5 py-2.5 text-sm shadow-sm outline-none focus:border-violet-500 focus:ring-2 focus:ring-violet-100"
         />
-      </label>
+      </div>
 
-      <label className="block">
-        <span className="mb-1.5 block text-sm font-medium text-slate-700">Job description</span>
+      <div>
+        <label htmlFor="description" className="mb-1.5 block text-sm font-medium text-slate-700">
+          Job description
+        </label>
         <textarea
+          id="description"
           required
           name="description"
           rows={12}
@@ -57,7 +69,7 @@ export default function CreateJobForm() {
           }
           className="w-full rounded-xl border border-slate-300 px-3.5 py-2.5 text-sm shadow-sm outline-none focus:border-violet-500 focus:ring-2 focus:ring-violet-100"
         />
-      </label>
+      </div>
 
       <button
         type="submit"

@@ -35,6 +35,13 @@ export const sessions = pgTable("sessions", {
   createdAt: timestamp("created_at").notNull().defaultNow(),
 });
 
+export const loginAttempts = pgTable("login_attempts", {
+  id: uuid("id").primaryKey().defaultRandom(),
+  email: varchar("email", { length: 255 }).notNull(),
+  ip: varchar("ip", { length: 64 }),
+  attemptedAt: timestamp("attempted_at").notNull().defaultNow(),
+});
+
 export const resumes = pgTable("resumes", {
   id: uuid("id").primaryKey().defaultRandom(),
   userId: uuid("user_id")

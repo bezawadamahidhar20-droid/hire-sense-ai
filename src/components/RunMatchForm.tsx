@@ -20,9 +20,12 @@ export default function RunMatchForm({
         <p className="rounded-lg bg-rose-50 px-4 py-2 text-sm text-rose-700">{state.error}</p>
       )}
 
-      <label className="block">
-        <span className="mb-1.5 block text-sm font-medium text-slate-700">Resume</span>
+      <div>
+        <label htmlFor="resumeId" className="mb-1.5 block text-sm font-medium text-slate-700">
+          Resume
+        </label>
         <select
+          id="resumeId"
           name="resumeId"
           defaultValue={defaultResumeId}
           required
@@ -37,28 +40,34 @@ export default function RunMatchForm({
             </option>
           ))}
         </select>
-      </label>
+      </div>
 
-      <label className="block">
-        <span className="mb-1.5 block text-sm font-medium text-slate-700">Job title (optional)</span>
+      <div>
+        <label htmlFor="jobTitle" className="mb-1.5 block text-sm font-medium text-slate-700">
+          Job title (optional)
+        </label>
         <input
+          id="jobTitle"
           name="jobTitle"
           type="text"
           placeholder="e.g. Python Backend Developer"
           className="w-full rounded-xl border border-slate-300 px-3.5 py-2.5 text-sm text-slate-900 shadow-sm outline-none focus:border-violet-500 focus:ring-2 focus:ring-violet-100"
         />
-      </label>
+      </div>
 
-      <label className="block">
-        <span className="mb-1.5 block text-sm font-medium text-slate-700">Job description</span>
+      <div>
+        <label htmlFor="jobDescription" className="mb-1.5 block text-sm font-medium text-slate-700">
+          Job description
+        </label>
         <textarea
+          id="jobDescription"
           name="jobDescription"
           required
           rows={12}
           placeholder="Paste the full job description here…"
           className="w-full rounded-xl border border-slate-300 px-3.5 py-2.5 text-sm text-slate-900 shadow-sm outline-none focus:border-violet-500 focus:ring-2 focus:ring-violet-100"
         />
-      </label>
+      </div>
 
       <button
         type="submit"

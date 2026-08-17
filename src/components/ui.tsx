@@ -23,7 +23,13 @@ export function ScoreRing({
 
   return (
     <div className="relative inline-grid place-items-center" style={{ width: size, height: size }}>
-      <svg width={size} height={size} className="-rotate-90">
+      <svg
+        width={size}
+        height={size}
+        className="-rotate-90"
+        aria-hidden="true"
+        focusable="false"
+      >
         <circle
           cx={size / 2}
           cy={size / 2}
@@ -99,9 +105,19 @@ export function AtsStatusPill({ status }: { status: "pass" | "warn" | "fail" }) 
     warn: "bg-amber-100 text-amber-800",
     fail: "bg-rose-100 text-rose-800",
   };
+  const labels: Record<string, string> = {
+    pass: "Passed",
+    warn: "Needs attention",
+    fail: "Failed",
+  };
   const icons: Record<string, string> = { pass: "✓", warn: "⚠", fail: "✗" };
   return (
-    <span className={`inline-flex h-6 w-6 items-center justify-center rounded-full text-xs font-bold ${styles[status]}`}>
+    <span
+      role="img"
+      aria-label={labels[status]}
+      title={labels[status]}
+      className={`inline-flex h-6 w-6 items-center justify-center rounded-full text-xs font-bold ${styles[status]}`}
+    >
       {icons[status]}
     </span>
   );

@@ -67,7 +67,7 @@ export function SignupForm() {
 
       <Field label="Full name" name="name" type="text" placeholder="Jane Doe" />
       <Field label="Email" name="email" type="email" placeholder="you@company.com" />
-      <Field label="Password" name="password" type="password" placeholder="At least 6 characters" />
+      <Field label="Password" name="password" type="password" placeholder="At least 8 characters" />
 
       <button
         type="submit"
@@ -125,15 +125,18 @@ function Field({
   placeholder: string;
 }) {
   return (
-    <label className="block">
-      <span className="mb-1.5 block text-sm font-medium text-slate-700">{label}</span>
+    <div>
+      <label htmlFor={name} className="mb-1.5 block text-sm font-medium text-slate-700">
+        {label}
+      </label>
       <input
+        id={name}
         required
         name={name}
         type={type}
         placeholder={placeholder}
         className="w-full rounded-xl border border-slate-300 px-3.5 py-2.5 text-sm text-slate-900 shadow-sm outline-none transition focus:border-violet-500 focus:ring-2 focus:ring-violet-100"
       />
-    </label>
+    </div>
   );
 }

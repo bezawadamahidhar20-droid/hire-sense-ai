@@ -1,23 +1,28 @@
 import type { Metadata } from "next";
 import type { ReactNode } from "react";
-import { Fraunces, Inter, IBM_Plex_Mono } from "next/font/google";
+import localFont from "next/font/local";
 import "./globals.css";
 
-const fraunces = Fraunces({
-  subsets: ["latin"],
+const fraunces = localFont({
+  src: "./fonts/Fraunces.woff2",
+  weight: "100 900",
   variable: "--font-fraunces",
   display: "swap",
 });
 
-const inter = Inter({
-  subsets: ["latin"],
+const inter = localFont({
+  src: "./fonts/Inter.woff2",
+  weight: "100 900",
   variable: "--font-inter",
   display: "swap",
 });
 
-const plexMono = IBM_Plex_Mono({
-  subsets: ["latin"],
-  weight: ["400", "500", "600"],
+const plexMono = localFont({
+  src: [
+    { path: "./fonts/IBMPlexMono-Regular.woff2", weight: "400" },
+    { path: "./fonts/IBMPlexMono-Medium.woff2", weight: "500" },
+    { path: "./fonts/IBMPlexMono-SemiBold.woff2", weight: "600" },
+  ],
   variable: "--font-plex-mono",
   display: "swap",
 });
