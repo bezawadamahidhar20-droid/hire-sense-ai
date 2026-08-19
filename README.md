@@ -40,8 +40,10 @@ black-box AI: matching is deterministic and auditable.
    npm run db:push
    ```
 
-   This creates all tables (`users`, `sessions`, `resumes`, `jobs`, `matches`,
-   `recommendations`) plus the enums.
+   This creates all tables (`users`, `sessions`, `resumes`, `jobs`, `matches`)
+   plus the enums. (An earlier `recommendations` table was removed — improvement
+   suggestions are computed on demand and shown on the resume improve page
+   rather than persisted.)
 
 4. **Run the app**
 

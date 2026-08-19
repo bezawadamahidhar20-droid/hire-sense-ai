@@ -14,7 +14,7 @@ export const SKILL_DICTIONARY: Record<string, string[]> = {
   Ruby: ["ruby"],
   PHP: ["php"],
   SQL: ["sql", "structured query language"],
-  NoSQL: ["nosql", "mongodb", "dynamodb", "cassandra"],
+  NoSQL: ["nosql", "dynamodb", "cassandra"],
   React: ["react", "reactjs", "react.js"],
   "Next.js": ["next.js", "nextjs"],
   "Vue.js": ["vue", "vuejs", "vue.js"],
