@@ -158,19 +158,37 @@ export async function screenCandidatesAction(
   return { success: `Screened ${processed} candidate(s).` };
 }
 
+// Only recruiters who own the job may update a match's status.
+// We join matches -> jobs and verify jobs.recruiterId = user.id to
+// prevent IDOR attacks where a candidate or another recruiter could
+// flip statuses on matches they don't own.
 export async function updateMatchStatusAction(
   matchId: string,
   status: "shortlist" | "review" | "reject"
 ): Promise<void> {
   const user = await getCurrentUser();
-  if (!user) return;
-  const [updated] = await db
+  if (!user || user.role !== "recruiter") return;
+
+  // Verify the match belongs to a job owned by this recruiter.
+  const rows = await db
+    .select({ jobId: matches.jobId })
+    .from(matches)
+    .where(eq(matches.id, matchId))
+    .limit(1);
+  const matchRow = rows[0];
+  if (!matchRow?.jobId) return;
+
+  const jobRows = await db
+    .select({ id: jobs.id })
+    .from(jobs)
+    .where(and(eq(jobs.id, matchRow.jobId), eq(jobs.recruiterId, user.id)))
+    .limit(1);
+  if (jobRows.length === 0) return;
+
+  await db
     .update(matches)
     .set({ status })
-    .where(eq(matches.id, matchId))
-    .returning({ jobId: matches.jobId });
+    .where(eq(matches.id, matchId));
   revalidatePath("/recruiter");
-  if (updated?.jobId) {
-    revalidatePath(`/recruiter/jobs/${updated.jobId}`);
-  }
+  revalidatePath(`/recruiter/jobs/${matchRow.jobId}`);
 }

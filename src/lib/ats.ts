@@ -273,5 +273,5 @@ function rewriteWeakLine(line: string, verb: string): string {
     .replace(/^(worked on|responsible for|helped with|involved in|assisted with|duties included|tasked with)/i, "")
     .trim();
   const capitalized = cleaned.charAt(0).toUpperCase() + cleaned.slice(1);
-  return `${verb} ${capitalized.replace(/\.$/, "")}, improving efficiency by an estimated 20-30% (add your real metric here).`;
+  return `${verb} ${capitalized.replace(/\.$/, "")}, [add a specific metric: % improvement, time saved, users/revenue impacted, or scale].`;
 }

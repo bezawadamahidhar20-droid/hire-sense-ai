@@ -71,6 +71,7 @@ export default async function DashboardPage() {
           <StatCard
             label="Resume score"
             value={latestResume ? latestResume.atsScore : "—"}
+            tone={scoreDelta !== null && scoreDelta < 0 ? "negative" : "positive"}
             hint={
               scoreDelta === null
                 ? undefined

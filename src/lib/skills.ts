@@ -13,7 +13,7 @@ export const SKILL_DICTIONARY: Record<string, string[]> = {
   Go: ["golang", " go "],
   Ruby: ["ruby"],
   PHP: ["php"],
-  SQL: ["sql", "postgresql", "mysql", "structured query language"],
+  SQL: ["sql", "structured query language"],
   NoSQL: ["nosql", "mongodb", "dynamodb", "cassandra"],
   React: ["react", "reactjs", "react.js"],
   "Next.js": ["next.js", "nextjs"],
@@ -146,19 +146,38 @@ export function extractExperienceYears(text: string): number {
   if (max > 0) return max;
 
   // Fall back: sum date ranges like "2021 - 2023" or "2021 - Present".
+  // Overlapping or duplicate ranges are merged so they aren't double-counted.
   const rangeRe = /(19|20)\d{2}\s*[-–to]+\s*(present|current|(19|20)\d{2})/gi;
-  let totalMonths = 0;
+  const ranges: [number, number][] = [];
   let m: RegExpExecArray | null;
   const now = new Date().getFullYear();
+  const MAX_RANGE_YEARS = 50;
   while ((m = rangeRe.exec(text)) !== null) {
     const start = parseInt(m[0].match(/(19|20)\d{2}/)?.[0] ?? `${now}`, 10);
     const isPresent = /present|current/i.test(m[2]);
     const end = isPresent ? now : parseInt(m[2], 10);
     if (!Number.isNaN(start) && !Number.isNaN(end) && end >= start) {
-      totalMonths += (end - start) * 12;
+      // Cap individual range to a sane maximum to guard against garbage matches.
+      const spanYears = Math.min(end - start, MAX_RANGE_YEARS);
+      ranges.push([start, start + spanYears]);
     }
   }
-  return Math.round((totalMonths / 12) * 10) / 10;
+  // Merge overlapping / adjacent intervals (standard interval-merge).
+  ranges.sort((a, b) => a[0] - b[0]);
+  const merged: [number, number][] = [];
+  for (const [s, e] of ranges) {
+    if (merged.length === 0 || s > merged[merged.length - 1][1]) {
+      merged.push([s, e]);
+    } else {
+      // Overlap — extend the end if this range ends later.
+      merged[merged.length - 1][1] = Math.max(merged[merged.length - 1][1], e);
+    }
+  }
+  let mergedMonths = 0;
+  for (const [s, e] of merged) {
+    mergedMonths += (e - s) * 12;
+  }
+  return Math.round((mergedMonths / 12) * 10) / 10;
 }
 
 export function extractEducation(text: string): string {

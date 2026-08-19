@@ -100,17 +100,6 @@ export const matches = pgTable("matches", {
   createdAt: timestamp("created_at").notNull().defaultNow(),
 });
 
-export const recommendations = pgTable("recommendations", {
-  id: uuid("id").primaryKey().defaultRandom(),
-  resumeId: uuid("resume_id")
-    .notNull()
-    .references(() => resumes.id, { onDelete: "cascade" }),
-  category: varchar("category", { length: 40 }).notNull(),
-  original: text("original").notNull().default(""),
-  suggestion: text("suggestion").notNull(),
-  priority: varchar("priority", { length: 20 }).notNull().default("medium"),
-  createdAt: timestamp("created_at").notNull().defaultNow(),
-});
 
 export type AtsCheck = {
   label: string;

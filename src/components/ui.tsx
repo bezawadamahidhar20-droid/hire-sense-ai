@@ -163,16 +163,22 @@ export function StatCard({
   label,
   value,
   hint,
+  tone = "positive",
 }: {
   label: string;
   value: string | number;
   hint?: string;
+  tone?: "positive" | "negative";
 }) {
   return (
     <Card className="flex flex-col gap-1">
       <span className="text-sm font-medium text-slate-500">{label}</span>
       <span className="font-mono-tight text-4xl font-semibold text-slate-950">{value}</span>
-      {hint && <span className="text-xs text-emerald-700">{hint}</span>}
+      {hint && (
+        <span className={`text-xs ${tone === "negative" ? "text-rose-700" : "text-emerald-700"}`}>
+          {hint}
+        </span>
+      )}
     </Card>
   );
 }

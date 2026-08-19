@@ -15,17 +15,33 @@ export type ParsedJob = {
  * when no explicit preferred section exists.
  */
 export function parseJobDescription(description: string): ParsedJob {
-  const lower = description.toLowerCase();
-  const preferredHeadingRe =
-    /(preferred|nice[- ]to[- ]have|bonus|good to have)[^\n]*:?/i;
-  const preferredMatch = preferredHeadingRe.exec(description);
+  // Only treat "preferred" / "nice-to-have" as a section boundary when it
+  // looks like an actual heading — e.g. it starts at the beginning of a line,
+  // is relatively short (< 40 chars), and/or is followed by a colon or newline.
+  // This prevents mid-sentence mentions like
+  //   "Experience with Kubernetes is preferred but not required"
+  // from splitting the description prematurely.
+  //
+  // Examples:
+  //   ✗ "...is preferred but not required..." — mid-sentence, NOT a heading
+  //   ✓ "Preferred Skills:\n" — starts at line start, short, colon
+  //   ✓ "Nice-to-Have" — standalone short line
+  const lines = description.split("\n");
+  let splitIndex = -1;
+  for (let i = 0; i < lines.length; i++) {
+    const trimmed = lines[i].trim();
+    if (/^(preferred|nice[- ]to[- ]have|bonus|good to have)[^\n]{0,30}[:]?$/i.test(trimmed)) {
+      splitIndex = i;
+      break;
+    }
+  }
 
   let requiredText = description;
   let preferredText = "";
 
-  if (preferredMatch) {
-    requiredText = description.slice(0, preferredMatch.index);
-    preferredText = description.slice(preferredMatch.index);
+  if (splitIndex >= 0) {
+    requiredText = lines.slice(0, splitIndex).join("\n");
+    preferredText = lines.slice(splitIndex).join("\n");
   }
 
   const requiredSkillsMap = extractSkills(requiredText);
@@ -48,8 +64,6 @@ export function parseJobDescription(description: string): ParsedJob {
     education,
     responsibilities,
   };
-
-  void lower;
 }
 
 function extractResponsibilities(text: string): string[] {
