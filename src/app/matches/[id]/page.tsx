@@ -41,7 +41,7 @@ export default async function MatchDetailPage({
       <Nav />
       <main className="mx-auto max-w-4xl px-6 py-10">
         <p className="text-xs font-medium uppercase tracking-wide text-slate-400">
-          hiresense.ai/matches/{match.id.slice(0, 8)}
+          Match {match.id.slice(0, 8)}
         </p>
 
         <Card className="mt-3 flex flex-col items-center gap-6 sm:flex-row sm:items-start">

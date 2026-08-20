@@ -25,6 +25,8 @@ export default async function NewMatchPage({
     .where(eq(resumes.userId, user.id))
     .orderBy(desc(resumes.createdAt));
 
+  const validResumeId = myResumes.some((r) => r.id === resumeId) ? resumeId : undefined;
+
   return (
     <div className="min-h-screen bg-slate-50">
       <Nav />
@@ -45,7 +47,7 @@ export default async function NewMatchPage({
           </Card>
         ) : (
           <Card className="mt-6">
-            <RunMatchForm resumeOptions={myResumes} defaultResumeId={resumeId} />
+            <RunMatchForm resumeOptions={myResumes} defaultResumeId={validResumeId} />
           </Card>
         )}
       </main>

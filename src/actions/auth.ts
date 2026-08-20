@@ -42,7 +42,16 @@ export async function signupAction(
     return { error: "Invalid role selected." };
   }
 
-  const existing = await db.select().from(users).where(eq(users.email, email)).limit(1);
+  let existing: { id: string }[] = [];
+  try {
+    existing = await db
+      .select({ id: users.id })
+      .from(users)
+      .where(eq(users.email, email))
+      .limit(1);
+  } catch {
+    return { error: "Could not reach the database. Please try again in a moment." };
+  }
   if (existing.length > 0) {
     return { error: "An account with this email already exists." };
   }
@@ -58,10 +67,14 @@ export async function signupAction(
     if (isUniqueViolation(err)) {
       return { error: "An account with this email already exists." };
     }
-    throw err;
+    return { error: "Could not reach the database. Please try again in a moment." };
   }
 
-  await createSession(user.id);
+  try {
+    await createSession(user.id);
+  } catch {
+    return { error: "Could not reach the database. Please try again in a moment." };
+  }
   redirect(user.role === "recruiter" ? "/recruiter" : "/dashboard");
 }
 
@@ -86,8 +99,13 @@ export async function loginAction(
     };
   }
 
-  const rows = await db.select().from(users).where(eq(users.email, email)).limit(1);
-  const user = rows[0];
+  let user: { id: string; passwordHash: string; role: "candidate" | "recruiter" } | undefined;
+  try {
+    const rows = await db.select().from(users).where(eq(users.email, email)).limit(1);
+    user = rows[0];
+  } catch {
+    return { error: "Could not reach the database. Please try again in a moment." };
+  }
   if (!user) {
     await recordFailedLogin(email, ip);
     return { error: "Invalid email or password." };
@@ -98,8 +116,12 @@ export async function loginAction(
     return { error: "Invalid email or password." };
   }
 
-  await clearLoginAttempts(email);
-  await createSession(user.id);
+  try {
+    await clearLoginAttempts(email);
+    await createSession(user.id);
+  } catch {
+    return { error: "Could not reach the database. Please try again in a moment." };
+  }
   redirect(user.role === "recruiter" ? "/recruiter" : "/dashboard");
 }
 

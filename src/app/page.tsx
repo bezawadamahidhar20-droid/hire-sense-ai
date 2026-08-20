@@ -54,7 +54,7 @@ export default async function HomePage() {
             <div className="mb-4 flex items-center justify-between border-b border-slate-100 pb-4">
               <div>
                 <p className="text-xs font-medium uppercase tracking-wide text-slate-400">
-                  hiresense.ai/matches/8841
+                  Sample match result
                 </p>
                 <p className="font-display text-lg font-medium text-slate-950">
                   Python Backend Developer

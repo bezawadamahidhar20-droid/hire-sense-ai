@@ -1,7 +1,7 @@
 import "server-only";
 import bcrypt from "bcryptjs";
 import crypto from "crypto";
-import { cookies } from "next/headers";
+import { cookies, headers } from "next/headers";
 import { db } from "@/db";
 import { sessions, users } from "@/db/schema";
 import { eq } from "drizzle-orm";
@@ -35,9 +35,14 @@ export async function createSession(userId: string): Promise<string> {
     expiresAt: new Date(Date.now() + SESSION_TTL_MS),
   });
   const store = await cookies();
+  // Mark the cookie secure only when the request actually arrived over HTTPS
+  // (via x-forwarded-proto). Tying this to NODE_ENV silently drops the cookie
+  // on plain-HTTP hosts that set NODE_ENV=production, logging users back out.
+  const forwardedProto = (await headers()).get("x-forwarded-proto");
+  const secure = forwardedProto?.split(",")[0]?.trim() === "https";
   store.set(SESSION_COOKIE, token, {
     httpOnly: true,
-    secure: process.env.NODE_ENV === "production",
+    secure,
     sameSite: "lax",
     path: "/",
     maxAge: SESSION_TTL_MS / 1000,
